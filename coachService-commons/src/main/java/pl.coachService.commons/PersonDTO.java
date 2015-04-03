@@ -1,12 +1,15 @@
 package pl.coachService.commons;
 
 import java.sql.Date;
+import java.util.Map;
 import java.util.Set;
 
 public class PersonDTO {
 
     private Long id;
     private String username;
+    private String password;
+    private Map<String, Boolean> roles;
     private String firstname;
     private String lastname;
     private String email;
@@ -24,9 +27,10 @@ public class PersonDTO {
 
     }
 
-    public PersonDTO(Long id, String username, String email) {
+    public PersonDTO(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
@@ -44,6 +48,22 @@ public class PersonDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Map<String, Boolean> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Map<String, Boolean> roles) {
+        this.roles = roles;
     }
 
     public String getFirstname() {

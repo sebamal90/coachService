@@ -35,6 +35,9 @@ public class Person implements DbObj<PersonDTO> {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "firstname")
     private String firstname;
 
@@ -80,21 +83,23 @@ public class Person implements DbObj<PersonDTO> {
 
     }
 
-    public Person(String username, String email) {
+    public Person(String username, String password, String email) {
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
-    public Person(Long id, String username, String email) {
+    public Person(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
     //CHECKSTYLE:OFF
     public PersonDTO toDTO() {
         Set<TeamDTO> teamsDTO = new HashSet<>();
-        PersonDTO dtoObj = new PersonDTO(this.id, this.username, this.email);
+        PersonDTO dtoObj = new PersonDTO(this.id, this.username, this.password, this.email);
 
         if (this.firstname != null) {
             dtoObj.setFirstname(this.firstname);
@@ -206,6 +211,14 @@ public class Person implements DbObj<PersonDTO> {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstname() {

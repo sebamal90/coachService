@@ -42,7 +42,7 @@ public class PersonApiResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public PersonDTO addPerson(PersonDTO person) throws DataIntegrityException {
-        return PeopleManager.createPerson(person.getUsername(), person.getEmail());
+        return PeopleManager.createPerson(person.getUsername(), person.getPassword(), person.getEmail());
     }
 
     @DELETE
