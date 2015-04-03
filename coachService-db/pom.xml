@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>CoachService</artifactId>
+        <groupId>pl.coachService</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>coachService-db</artifactId>
+    <packaging>jar</packaging>
+    <name>CoachService Database</name>
+
+    <properties>
+        <db.configResource>hibernate.cfg.xml</db.configResource>
+        <db.configFileName>hibernate.cfg.xml</db.configFileName>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>pl.coachService</groupId>
+            <artifactId>coachService-commons</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1201-jdbc41</version>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.5.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>4.3.5.Final</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>CREATE-DB</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>9.4-1201-jdbc41</version>
+                            </dependency>
+                        </dependencies>
+
+                        <configuration>
+                            <driver>org.postgresql.Driver</driver>
+                            <username>coachService</username>
+                            <password>admin</password>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>try-version-print</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>jdbc:postgresql://localhost/postgres</url>
+                                    <autocommit>true</autocommit>
+                                    <sqlCommand>select version()</sqlCommand>
+                                    <onError>continue</onError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>create-database</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>jdbc:postgresql://localhost/postgres</url>
+                                    <autocommit>true</autocommit>
+                                    <orderFile>ascending</orderFile>
+                                    <fileset>
+                                        <basedir>${basedir}/src/main/resources/sql</basedir>
+                                        <includes>
+                                            <include>create-db.sql</include>
+                                        </includes>
+                                    </fileset>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
