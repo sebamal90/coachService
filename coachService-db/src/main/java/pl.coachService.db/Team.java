@@ -43,6 +43,11 @@ public class Team implements DbObj<TeamDTO> {
         this.description = description;
     }
 
+    public Team(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public TeamDTO toDTO() {
         TeamDTO dtoObj = new TeamDTO(this.getId(), this.name);
         if (this.description != null) {

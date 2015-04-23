@@ -10,39 +10,39 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 
 @Component
 @Path("/person")
 public class PersonApiResource {
-  /*  @GET
+
+    @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public PersonListDTO getPersonList(
-            @QueryParam("page") int pageNumber,
-            @DefaultValue("id") @QueryParam("orderBy") String orderBy,
-            @DefaultValue("20") @QueryParam("perPage") int pageSize
-    ) {
-
-        if(pageNumber == 0) {
-            return new PersonListDTO(PeopleManager.listPeople(), countPeople().getCount());
-        } else {
-            return new PersonListDTO(PeopleManager.listPagedPeople(pageNumber, orderBy, pageSize), countPeople().getCount());
-        }
-
-
-
+    public List<PersonDTO> getTeamsList(){
+        return PeopleManager.listPeople();
     }
-      */
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public PersonDTO addPerson(PersonDTO person) throws DataIntegrityException {
         return PeopleManager.createPerson(person.getUsername(), person.getPassword(), person.getEmail());
+    }
+
+    @PUT
+    @Path("/{personId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public PersonDTO editPerson(@PathParam("personId") Long personId, PersonDTO person) throws DataIntegrityException, NotExistException {
+        return PeopleManager.editPerson(personId, person);
+
     }
 
     @DELETE
