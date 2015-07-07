@@ -5,11 +5,14 @@ import pl.coachService.commons.DataIntegrityException;
 import pl.coachService.commons.NotExistException;
 import pl.coachService.commons.PersonDTO;
 import pl.coachService.db.Person;
+import pl.coachService.db.Team;
 import pl.coachService.db.util.UniversalDAO;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class PeopleManager {
 
@@ -37,7 +40,7 @@ public final class PeopleManager {
         return UniversalDAO.getPage(Person.class, pageNumber, sortBy, pageSize);
     }
 
-    public static CountDTO countPeople(){
+    public static CountDTO countPeople() {
         return new CountDTO("people", UniversalDAO.count(Person.class));
     }
 
@@ -66,29 +69,63 @@ public final class PeopleManager {
         return hidePassword(Person.getDTO(result.getId()), true);
     }
 
-    public static PersonDTO editPerson(Long personId, PersonDTO dto) throws NotExistException {
+    //CHECKSTYLE:OFF
+    public static PersonDTO editPerson(Long personId, PersonDTO dtoObj) throws NotExistException {
         Person person = Person.get(personId);
         if (person == null) {
             throw new NotExistException("person does not exist");
         }
 
-        boolean modified = false;
+        if (dtoObj.getUsername() != null) {
+            person.setUsername(dtoObj.getUsername());
+        }
+        if (dtoObj.getEmail() != null) {
+            person.setEmail(dtoObj.getEmail());
+        }
+        if (dtoObj.getFirstname() != null) {
+            person.setFirstname(dtoObj.getFirstname());
+        }
+        if (dtoObj.getLastname() != null) {
+            person.setLastname(dtoObj.getLastname());
+        }
+        if (dtoObj.getPhone() != null) {
+            person.setPhone(dtoObj.getPhone());
+        }
+        if (dtoObj.getBirthdate() != null) {
+            person.setBirthdate(dtoObj.getBirthdate());
+        }
+        if (dtoObj.getHeight() != null) {
+            person.setHeight(dtoObj.getHeight());
+        }
+        if (dtoObj.getTimezone() != null) {
+            person.setTimezone(dtoObj.getTimezone());
+        }
+        if (dtoObj.getAddress() != null) {
+            person.setAddress(dtoObj.getAddress());
+        }
+        if (dtoObj.getPostalCode() != null) {
+            person.setPostalCode(dtoObj.getPostalCode());
+        }
+        if (dtoObj.getCity() != null) {
+            person.setCity(dtoObj.getCity());
+        }
+        if (dtoObj.getCountry() != null) {
+            person.setCountry(dtoObj.getCountry());
+        }
 
-        if (dto.getUsername() != null) {
-            person.setUsername(dto.getUsername());
-            modified = true;
-        }
-        if (dto.getEmail() != null) {
-            person.setEmail(dto.getEmail());
-            modified = true;
+        if (dtoObj.getTeams() != null) {
+            Set<Team> teamList = new HashSet();
+            for (Long teamId : dtoObj.getTeams()) {
+                teamList.add(Team.get(teamId));
+            }
+            person.setTeams(teamList);
         }
 
-        if (modified) {
-            Person.update(person);
-        }
+        Person.update(person);
 
         return Person.getDTO(personId);
     }
+    //CHECKSTYLE:ON
 
 
     public static PersonDTO deletePerson(Long personId) throws NotExistException {

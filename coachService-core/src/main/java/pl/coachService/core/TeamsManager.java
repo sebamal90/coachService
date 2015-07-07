@@ -23,7 +23,7 @@ public final class TeamsManager {
         return UniversalDAO.getPage(Team.class, pageNumber, sortBy, pageSize);
     }
 
-    public static CountDTO countTeams(){
+    public static CountDTO countTeams() {
         return new CountDTO("teams", UniversalDAO.count(Team.class));
     }
 
@@ -51,7 +51,7 @@ public final class TeamsManager {
     public static TeamDTO editTeam(Long teamId, TeamDTO teamDTO) throws NotExistException {
         Team team = Team.get(teamId);
         if (team == null) {
-            throw new NotExistException("person does not exist");
+            throw new NotExistException("team does not exist");
         }
 
         boolean modified = false;

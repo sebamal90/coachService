@@ -1,5 +1,9 @@
 package pl.coachService.db;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import pl.coachService.commons.ActivityDTO;
 import pl.coachService.commons.NotExistException;
 import pl.coachService.db.util.DbObj;
@@ -13,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -79,6 +84,14 @@ public class Activity implements DbObj<ActivityDTO> {
 
     }
 
+    public Activity(String name, Person person, Date startDate, int time, String type) {
+        this.name = name;
+        this.person = person;
+        this.startDate = startDate;
+        this.time = time;
+        this.type = type;
+    }
+
     public Activity(Long id, String name, Person person, Date startDate, int time, String type) {
         this.id = id;
         this.name = name;
@@ -90,7 +103,7 @@ public class Activity implements DbObj<ActivityDTO> {
 
     //CHECKSTYLE:OFF
     public ActivityDTO toDTO() {
-        ActivityDTO dtoObj = new ActivityDTO(this.id, this.name, this.person.getId(), this.startDate, this.time, this.type);
+        ActivityDTO dtoObj = new ActivityDTO(this.id, this.name, this.person.getId(), this.startDate.getTime(), this.time, this.type);
 
         if (this.distance != null) {
             dtoObj.setDistance(this.distance);
@@ -140,6 +153,45 @@ public class Activity implements DbObj<ActivityDTO> {
 
     public static List<ActivityDTO> getAllDTO() {
         return UniversalDAO.getAll(Activity.class);
+    }
+
+    public static List<ActivityDTO> getActivityListForPersonDTO(Person person) {
+        List<ActivityDTO> resultList = new LinkedList<>();
+        Session session = HibernateUtil.openSession();
+        try {
+            List<Activity> dbObjList;
+            dbObjList = session.createCriteria(Activity.class).add(Restrictions.eq("person", person)).list();
+            for (Activity act : dbObjList) {
+                resultList.add(act.toDTO());
+            }
+        } finally {
+            session.close();
+        }
+
+        return resultList;
+    }
+
+    public static List<ActivityDTO> getPagedActivityListForPersonDTO(Person person, int pageNumber, String sortBy, int pageSize) {
+        List<ActivityDTO> resultList = new LinkedList<>();
+        Session session = HibernateUtil.openSession();
+        try {
+            Criteria criteria = session.createCriteria(Activity.class);
+            criteria.add(Restrictions.eq("person", person));
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+            criteria.setMaxResults(pageSize);
+            criteria.addOrder(Order.asc(sortBy));
+            List<Activity> dbObjList = criteria.list();
+
+            if (dbObjList != null) {
+                for (Activity act : dbObjList) {
+                    resultList.add(act.toDTO());
+                }
+            }
+        } finally {
+            session.close();
+        }
+
+        return resultList;
     }
 
     public static Activity get(Long id) throws NotExistException {

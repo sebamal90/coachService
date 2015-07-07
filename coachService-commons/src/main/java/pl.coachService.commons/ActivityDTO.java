@@ -1,15 +1,13 @@
 package pl.coachService.commons;
 
-import java.sql.Date;
-
 public class ActivityDTO {
     private Long id;
     private String name;
-    private long personId;
-    private Date startDate;
+    private Long personId;
+    private Long startDate;
     private String type;
     private float distance;
-    private int time;
+    private Integer time;
     private int heartRateMax;
     private int heartRateAvg;
     private int powerMax;
@@ -25,7 +23,7 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
-    public ActivityDTO(Long id, String name, long personId, Date startDate, int time, String type) {
+    public ActivityDTO(Long id, String name, long personId, Long startDate, int time, String type) {
         this.id = id;
         this.name = name;
         this.personId = personId;
@@ -50,19 +48,19 @@ public class ActivityDTO {
         this.name = name;
     }
 
-    public long getPerson() {
+    public Long getPersonId() {
         return personId;
     }
 
-    public void setPerson(long personId) {
+    public void setPerson(Long personId) {
         this.personId = personId;
     }
 
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
@@ -82,11 +80,11 @@ public class ActivityDTO {
         this.distance = distance;
     }
 
-    public int getTime() {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 

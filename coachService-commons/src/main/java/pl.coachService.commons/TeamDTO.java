@@ -1,8 +1,5 @@
 package pl.coachService.commons;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class TeamDTO {
 
     private Long id;
@@ -30,7 +27,7 @@ public class TeamDTO {
         return name;
     }
 
-    public void setName(String username) {
+    public void setName(String name) {
         this.name = name;
     }
 

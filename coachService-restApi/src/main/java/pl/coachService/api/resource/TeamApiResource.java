@@ -25,7 +25,7 @@ public class TeamApiResource {
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TeamDTO> getTeamsList(){
+    public List<TeamDTO> getTeamsList() {
         return TeamsManager.listTeams();
     }
 
@@ -37,12 +37,11 @@ public class TeamApiResource {
     }
 
     @PUT
-    @Path("/{personId}")
+    @Path("/{teamId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public TeamDTO editTeam(@PathParam("teamId") Long teamId, TeamDTO team) throws DataIntegrityException, NotExistException {
         return TeamsManager.editTeam(teamId, team);
-
     }
 
     @DELETE

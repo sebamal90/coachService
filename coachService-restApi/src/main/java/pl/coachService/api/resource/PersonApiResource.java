@@ -25,7 +25,7 @@ public class PersonApiResource {
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PersonDTO> getTeamsList(){
+    public List<PersonDTO> getPersonList() {
         return PeopleManager.listPeople();
     }
 
@@ -42,7 +42,6 @@ public class PersonApiResource {
     @Produces(MediaType.APPLICATION_JSON)
     public PersonDTO editPerson(@PathParam("personId") Long personId, PersonDTO person) throws DataIntegrityException, NotExistException {
         return PeopleManager.editPerson(personId, person);
-
     }
 
     @DELETE

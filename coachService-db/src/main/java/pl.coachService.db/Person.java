@@ -2,7 +2,6 @@ package pl.coachService.db;
 
 import pl.coachService.commons.NotExistException;
 import pl.coachService.commons.PersonDTO;
-import pl.coachService.commons.TeamDTO;
 import pl.coachService.db.util.DbObj;
 import pl.coachService.db.util.UniversalDAO;
 import org.hibernate.Session;
@@ -62,8 +61,8 @@ public class Person implements DbObj<PersonDTO> {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "postalcode")
-    private String postalcode;
+    @Column(name = "postalCode")
+    private String postalCode;
 
     @Column(name = "city")
     private String city;
@@ -98,7 +97,7 @@ public class Person implements DbObj<PersonDTO> {
 
     //CHECKSTYLE:OFF
     public PersonDTO toDTO() {
-        Set<TeamDTO> teamsDTO = new HashSet<>();
+        Set<Long> teamsDTO = new HashSet<>();
         PersonDTO dtoObj = new PersonDTO(this.id, this.username, this.password, this.email);
 
         if (this.firstname != null) {
@@ -122,8 +121,8 @@ public class Person implements DbObj<PersonDTO> {
         if (this.address != null) {
             dtoObj.setAddress(this.address);
         }
-        if (this.postalcode != null) {
-            dtoObj.setPostalCode(this.postalcode);
+        if (this.postalCode != null) {
+            dtoObj.setPostalCode(this.postalCode);
         }
         if (this.city != null) {
             dtoObj.setCity(this.city);
@@ -133,7 +132,7 @@ public class Person implements DbObj<PersonDTO> {
         }
         if (teams != null) {
             for (Team team : teams) {
-                teamsDTO.add(team.toDTO());
+                teamsDTO.add(team.toDTO().getId());
             }
         }
         dtoObj.setTeams(teamsDTO);
@@ -261,11 +260,11 @@ public class Person implements DbObj<PersonDTO> {
         this.birthdate = birthdate;
     }
 
-    public int getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
@@ -285,12 +284,12 @@ public class Person implements DbObj<PersonDTO> {
         this.address = address;
     }
 
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostalcode(String postalcode) {
-        this.postalcode = postalcode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getCity() {
@@ -317,9 +316,6 @@ public class Person implements DbObj<PersonDTO> {
         this.teams = teams;
     }
 
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
 
     public Set<Activity> getActivities() {
         return activities;

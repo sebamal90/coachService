@@ -15,13 +15,13 @@ public class PersonDTO {
     private String email;
     private String phone;
     private Date birthdate;
-    private int height;
+    private Integer height;
     private String timezone;
     private String address;
     private String postalCode;
     private String city;
     private String country;
-    private Set<TeamDTO> teams;
+    private Set<Long> teamsIds;
 
     public PersonDTO() {
 
@@ -106,11 +106,11 @@ public class PersonDTO {
         this.birthdate = birthdate;
     }
 
-    public int getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
@@ -154,11 +154,11 @@ public class PersonDTO {
         this.country = country;
     }
 
-    public Set<TeamDTO> getTeams() {
-        return teams;
+    public Set<Long> getTeams() {
+        return teamsIds;
     }
 
-    public void setTeams(Set<TeamDTO> teams) {
-        this.teams = teams;
+    public void setTeams(Set<Long> teamsIds) {
+        this.teamsIds = teamsIds;
     }
 }
