@@ -4,6 +4,7 @@ import pl.coachService.commons.DataIntegrityException;
 import pl.coachService.commons.NotExistException;
 import pl.coachService.commons.PersonDTO;
 import org.springframework.stereotype.Component;
+import pl.coachService.commons.access.UserAccountDTO;
 import pl.coachService.core.PeopleManager;
 
 import javax.ws.rs.Consumes;
@@ -32,8 +33,8 @@ public class PersonApiResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PersonDTO addPerson(PersonDTO person) throws DataIntegrityException {
-        return PeopleManager.createPerson(person.getUsername(), person.getPassword(), person.getEmail());
+    public PersonDTO addPerson(PersonDTO person, UserAccountDTO user) throws DataIntegrityException {
+        return PeopleManager.createPerson(person.getFirstname(), person.getLastname(), person.getEmail());
     }
 
     @PUT

@@ -31,12 +31,6 @@ public class Person implements DbObj<PersonDTO> {
     @Column(name = "person_id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
-
     @Column(name = "firstname")
     private String firstname;
 
@@ -82,23 +76,23 @@ public class Person implements DbObj<PersonDTO> {
 
     }
 
-    public Person(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
+    public Person(String firstname, String lastname, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
     }
 
-    public Person(Long id, String username, String password, String email) {
+    public Person(Long id, String firstname, String lastname, String email) {
         this.id = id;
-        this.username = username;
-        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
     }
 
     //CHECKSTYLE:OFF
     public PersonDTO toDTO() {
         Set<Long> teamsDTO = new HashSet<>();
-        PersonDTO dtoObj = new PersonDTO(this.id, this.username, this.password, this.email);
+        PersonDTO dtoObj = new PersonDTO(this.id, this.email);
 
         if (this.firstname != null) {
             dtoObj.setFirstname(this.firstname);
@@ -173,13 +167,7 @@ public class Person implements DbObj<PersonDTO> {
             if (personToBeDeleted == null) {
                 throw new NotExistException("person cannot be deleted, because it does not exist");
             }
-   /*
-            for (DetectedFace face : personToBeDeleted.getFaces()) {
-                face.setLinkedBy(null);
-                face.setPerson(null);
-                session.update(face);
-            }
-   */
+
             session.delete(personToBeDeleted);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -202,22 +190,6 @@ public class Person implements DbObj<PersonDTO> {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {

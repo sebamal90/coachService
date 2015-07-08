@@ -8,25 +8,11 @@ import pl.coachService.db.Person;
 import pl.coachService.db.Team;
 import pl.coachService.db.util.UniversalDAO;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class PeopleManager {
-
-    private static String encodePassword(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(password);
-    }
-
-    public static PersonDTO hidePassword(PersonDTO dto, boolean hide) {
-        if (hide && dto != null) {
-            dto.setPassword("<hidden>");
-        }
-        return dto;
-    }
 
     protected PeopleManager() {
 
@@ -54,19 +40,21 @@ public final class PeopleManager {
         }
     }
 
-    public static PersonDTO createPerson(String username, String password, String email) throws DataIntegrityException {
-        if (username == null) {
-            throw new DataIntegrityException("username has to be specified");
-        } else if (password == null) {
-            throw new DataIntegrityException("password has to be specified");
+    public static PersonDTO createPerson(String firstname, String lastname, String email) throws DataIntegrityException {
+        if (firstname == null) {
+            throw new DataIntegrityException("firstname has to be specified");
+        } else if (lastname == null) {
+            throw new DataIntegrityException("lastname has to be specified");
         } else if (email == null) {
             throw new DataIntegrityException("email must be specified");
         }
 
-        Person person = new Person(username, encodePassword(password), email);
+        //Person person = new Person(username, encodePassword(password), email);
+        Person person = new Person(firstname, lastname, email);
         Person result = Person.save(person);
 
-        return hidePassword(Person.getDTO(result.getId()), true);
+        //return hidePassword(Person.getDTO(result.getId()), true);
+        return Person.getDTO(result.getId());
     }
 
     //CHECKSTYLE:OFF
@@ -76,9 +64,6 @@ public final class PeopleManager {
             throw new NotExistException("person does not exist");
         }
 
-        if (dtoObj.getUsername() != null) {
-            person.setUsername(dtoObj.getUsername());
-        }
         if (dtoObj.getEmail() != null) {
             person.setEmail(dtoObj.getEmail());
         }

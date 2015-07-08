@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+    <context:annotation-config />
+    <context:component-scan base-package="pl.coachService.api" />
+    <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" />
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder hash="bcrypt"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:http
+            realm="Protected API"
+            use-expressions="true"
+            auto-config="false"
+            entry-point-ref="unauthorizedEntryPoint"
+            authentication-manager-ref="authenticationManager"
+            create-session="stateless"
+            disable-url-rewriting="true">
+
+        <security:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
+        <security:intercept-url method="POST" pattern="/api/user/authenticate" access="permitAll" />
+        <security:logout invalidate-session="true" delete-cookies="JSESSIONID"/>
+    </security:http>
+
+    <bean id="unauthorizedEntryPoint" class="pl.coachService.api.UnauthorizedEntryPoint" />
+
+    <bean class="pl.coachService.api.AuthenticationTokenProcessingFilter" id="authenticationTokenProcessingFilter">
+        <constructor-arg ref="userDetailsService" />
+    </bean>
+
+</beans>

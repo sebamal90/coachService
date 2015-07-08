@@ -32,6 +32,9 @@
         <mapping class="pl.coachService.db.Person"/>
         <mapping class="pl.coachService.db.Team"/>
         <mapping class="pl.coachService.db.Activity"/>
+        <mapping class="pl.coachService.db.access.UserAccount"/>
+        <mapping class="pl.coachService.db.access.LoggedAction"/>
+        <mapping class="pl.coachService.db.access.UserSession"/>
 
     </session-factory>
 </hibernate-configuration>
